@@ -68,6 +68,8 @@ ews_account = Account(
 )
 ews_calendar = ews_account.calendar
 
+logger.info("Connected to Exchange server %s as %s", ews_config.server, ews_account)
+
 # CalDAV connection
 dav_client = caldav.DAVClient(
     url=config["caldav"]["url"],
@@ -79,8 +81,16 @@ dav_calendar: caldav.Calendar = dav_principal.calendar(
     name=config["caldav"]["calendar"]
 )
 
+logger.info(
+    "Connected to CalDAV server %s as %s", config["caldav"]["url"], dav_principal
+)
+
 fixed_ignore = config["skip-filter"].get("fixed", [])
 tag_ignore = config["skip-filter"].get("tag", None)
+if tag_ignore:
+    logger.info("Ignoring items with categories %s", tag_ignore)
+if fixed_ignore:
+    logger.info("Ignoring items with subjects %s", fixed_ignore)
 
 
 def create_ewsid_filter(the_id):
@@ -126,6 +136,7 @@ for change_type, item in ews_calendar.sync_items(
         logger.info("Deleting event from CalDAV server: %s", dav_object)
         try:
             dav_object.delete()
+            logger.info("Deleted event from CalDAV server: %s", dav_object)
         except Exception as e:
             logger.error(
                 "Error while deleting item from CalDAV server: %s",
@@ -166,6 +177,7 @@ for item in ews_account.fetch(ids=fetch_ids):
             continue
         try:
             dav_calendar.save_event(data.to_ical())
+            logger.info("Added/Updated item %s on CalDAV server", item.subject)
         except Exception as e:
             logger.error(
                 "Error while adding/updating item on CalDAV server: %s",
@@ -178,3 +190,4 @@ for item in ews_account.fetch(ids=fetch_ids):
 
 with open(config["misc"]["statefile"], "w") as f:
     f.write(ews_calendar.item_sync_state)
+    logger.info("Wrote new sync state to %s", config["misc"]["statefile"])

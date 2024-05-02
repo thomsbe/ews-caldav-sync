@@ -1,5 +1,9 @@
-/venv/
+/venv
+/.venv
 /config.toml
 syncstate.txt
 
 /.idea
+ews_calendar_sync.log
+/.github
+/.vscode
