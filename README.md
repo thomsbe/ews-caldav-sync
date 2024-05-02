@@ -14,6 +14,8 @@ Before storing the entry, a few changes are made to the data, using the [icalend
 - The `TRANSP` property is set to `TRANSPARENT` when the event's status is "FREE" according to the `'X-MICROSOFT-CDO-BUSYSTATUS` property
 - The `STATUS` property is set to `TENTATIVE` when the event's status is "TENTATIVE" according to the `'X-MICROSOFT-CDO-BUSYSTATUS` property
 
+Every entry with a given category or fixed titles will be ignored. That's usefull for daily blocker entries like lunch or something :) "fixed" in the config is for titles, "tag" is for the category
+
 ## Setup & Usage
 
 - Clone this repository

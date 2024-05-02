@@ -13,4 +13,8 @@ impersonate = false
 
 [misc]
 statefile = "syncstate.txt"
-loglevel = 30
+loglevel = INFO
+
+[skip-filter]
+fixed = ["Mittagessen", "Urlaub", "NiD"]
+tag = "!Sync"
