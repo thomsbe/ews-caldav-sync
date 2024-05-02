@@ -13,7 +13,6 @@ impersonate = false
 
 [misc]
 statefile = "syncstate.txt"
-loglevel = INFO
 
 [skip-filter]
 fixed = ["Mittagessen", "Urlaub", "NiD"]

@@ -32,6 +32,19 @@ import icalendar
 
 logger = logging.getLogger(__name__)
 
+logging.basicConfig(level=logging.INFO)
+
+console = logging.StreamHandler()
+console.setLevel(logging.INFO)
+formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+console.setFormatter(formatter)
+logger.addHandler(console)
+
+file = logging.FileHandler("ews_calendar_sync.log")
+file.setLevel(logging.INFO)
+file.setFormatter(formatter)
+logger.addHandler(file)
+
 parser = argparse.ArgumentParser(
     description="Incrementally synchronizes a Microsoft Exchange calendar to a CalDAV server."
 )
@@ -42,8 +55,6 @@ args = parser.parse_args()
 
 with open(args.config, encoding="utf-8") as f:
     config = toml.load(f)
-
-logging.basicConfig(level=config["misc"]["loglevel"])
 
 # EWS connection
 ews_credentials = Credentials(
